@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>dingledropper LABS — OG share card</title>
+<style>
+  /* Exact 1200x630 — standard OG image dimensions */
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :root {
+    --bg: #A0C8E0;
+    --surface: #EADAE8;
+    --surface-elevated: #DCC4DA;
+    --text-primary: #0A1020;
+    --text-tertiary: #3A4A6A;
+    --outline: #0A1020;
+    --accent: #1A5A9A;
+    --glow: #4488CC;
+  }
+
+  .card {
+    width: 1200px;
+    height: 630px;
+    background: var(--bg);
+    padding: 70px;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Top row — brand tag */
+  .brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand-tag {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: var(--surface-elevated);
+    padding: 14px 22px;
+    border: 3px solid var(--outline);
+    box-shadow: 6px 6px 0 0 var(--outline);
+    color: var(--text-primary);
+  }
+
+  .shield-badge {
+    width: 84px;
+    height: 84px;
+    background: var(--surface);
+    border: 3px solid var(--outline);
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 44px;
+    box-shadow: 6px 6px 0 0 var(--outline);
+  }
+
+  /* Middle — big brand mark */
+  .brand-mark {
+    margin-top: 10px;
+  }
+
+  .brand-name {
+    font-size: 132px;
+    font-weight: 900;
+    letter-spacing: -5px;
+    line-height: 0.88;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+
+  .brand-name .lab {
+    color: var(--accent);
+  }
+
+  .tagline {
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--text-primary);
+    max-width: 920px;
+    line-height: 1.25;
+    margin-top: 20px;
+  }
+
+  /* Bottom row — feature chips */
+  .bottom-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .chips {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    max-width: 820px;
+  }
+
+  .chip {
+    display: inline-block;
+    background: var(--surface);
+    border: 2.5px solid var(--outline);
+    border-radius: 100px;
+    padding: 10px 20px;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-primary);
+    box-shadow: 4px 4px 0 0 var(--outline);
+  }
+
+  .url {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-primary);
+    background: var(--accent);
+    color: #FFFFFF;
+    padding: 14px 22px;
+    border: 3px solid var(--outline);
+    border-radius: 14px;
+    box-shadow: 6px 6px 0 0 var(--outline);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  /* Soft backlit glow behind the big text */
+  .glow-bg {
+    position: absolute;
+    top: 180px;
+    left: 0;
+    right: 0;
+    height: 280px;
+    background: radial-gradient(ellipse at center, rgba(68, 136, 204, 0.45), rgba(68, 136, 204, 0) 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card > * {
+    position: relative;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="glow-bg"></div>
+
+  <div class="brand-row">
+    <div class="brand-tag">DINGLEDROPPER LABS</div>
+    <div class="shield-badge">🛡️</div>
+  </div>
+
+  <div class="brand-mark">
+    <div class="brand-name">dingledropper<span class="lab"> LABS</span></div>
+    <div class="tagline">privacy tools that physically can't phone home.</div>
+  </div>
+
+  <div class="bottom-row">
+    <div class="chips">
+      <span class="chip">Zero data collection</span>
+      <span class="chip">No servers</span>
+      <span class="chip">No analytics</span>
+      <span class="chip">On-device only</span>
+    </div>
+    <div class="url">dingledropper.com</div>
+  </div>
+</div>
+</body>
+</html>

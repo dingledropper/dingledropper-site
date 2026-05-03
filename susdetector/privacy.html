@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sus Detector — Privacy Policy</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      color: #222;
+      line-height: 1.7;
+      background: #fafafa;
+    }
+    h1 { font-size: 28px; margin-bottom: 4px; }
+    h2 { font-size: 20px; margin-top: 32px; color: #333; }
+    .date { color: #888; font-size: 14px; margin-bottom: 32px; }
+    .highlight {
+      background: #e8f5e9;
+      border-left: 4px solid #4caf50;
+      padding: 16px 20px;
+      margin: 24px 0;
+      border-radius: 4px;
+    }
+    ul { padding-left: 24px; }
+    li { margin-bottom: 8px; }
+    a { color: #1976d2; }
+  </style>
+</head>
+<body>
+  <h1>Privacy Policy</h1>
+  <p class="date">Version 1.3.1 &middot; Last updated: May 2, 2026</p>
+
+  <div class="highlight">
+    <strong>The short version:</strong> Sus Detector does not collect, store, or transmit any of your data off your device. Everything happens locally on your phone. We have no servers, no analytics, no accounts, no ads, no tracking, no Firebase, and no remote push tokens. Anything saved on your phone is encrypted at rest with a key sealed in your device&rsquo;s hardware-backed keystore.
+  </div>
+
+  <h2>What Sus Detector Does</h2>
+  <p>Sus Detector is an on-device Android privacy audit. It scans your installed apps and their permissions, runs a nine-check device security audit, identifies Bluetooth and Wi-Fi devices broadcasting around you, watches your cell connection for stingray (IMSI-catcher) signatures, and flags BLE trackers (AirTags, Tiles) that follow you over time. Every computation happens locally on your phone.</p>
+
+  <h2>Data We Collect</h2>
+  <p><strong>None.</strong></p>
+  <p>Sus Detector does not collect, upload, or share any personal data. Specifically:</p>
+  <ul>
+    <li>We do not collect your name, email, or any account information &mdash; there are no accounts</li>
+    <li>We do not upload the list of apps installed on your device</li>
+    <li>We do not transmit permission scan results, security audit results, or radar findings anywhere</li>
+    <li>We do not use analytics, crash reporting, or telemetry services of any kind</li>
+    <li>We do not include any advertising SDKs or tracking pixels</li>
+    <li>We do not register for Firebase Cloud Messaging, Expo push, or any other remote-notification service &mdash; the app contains no remote push token of any kind</li>
+    <li>We do not use cookies (there is no web component)</li>
+    <li>We do not access, store, or transmit your location coordinates &mdash; ever</li>
+  </ul>
+
+  <h2>Permissions We Use</h2>
+  <p>Sus Detector requests only the permissions strictly necessary for its features. Every permission is exercised locally on your device; nothing is transmitted off your phone.</p>
+  <ul>
+    <li><strong>QUERY_ALL_PACKAGES</strong> &mdash; Read the list of installed apps so we can scan their declared permissions. Read-only; no app details leave your device.</li>
+    <li><strong>ACCESS_WIFI_STATE</strong> &mdash; Read your current Wi-Fi connection details for the device security audit (encryption type, captive-portal status, DNS posture).</li>
+    <li><strong>ACCESS_NETWORK_STATE</strong> &mdash; Check current connectivity type (Wi-Fi vs. mobile vs. VPN active) to tailor the security audit.</li>
+    <li><strong>BLUETOOTH_SCAN</strong> &mdash; Detect nearby Bluetooth Low Energy devices (AirTags, Tile, audio gear, etc.) for the anti-stalking radar and the Nearby Devices view.</li>
+    <li><strong>BLUETOOTH_CONNECT</strong> &mdash; Read the names of devices already paired to your phone (audio gear, wearables) so they can be displayed in the Nearby Devices list. Required by Android 12+ for paired-device name access. We do not initiate connections to any device.</li>
+    <li><strong>ACCESS_FINE_LOCATION</strong> &mdash; Required by Android itself (not by us) to enable Bluetooth scanning and cell tower reads on Android 10+. Your location is <strong>never</strong> stored, logged, or transmitted. We do not receive GPS coordinates.</li>
+    <li><strong>READ_PHONE_STATE</strong> &mdash; Read current cell tower identifiers (cell ID, MCC, MNC) and signal strength to detect stingray / IMSI-catcher patterns. We do not access your phone number, contacts, or call logs.</li>
+    <li><strong>PACKAGE_USAGE_STATS</strong> &mdash; Read per-app network byte counters via Android&rsquo;s NetworkStatsManager so the Network tab can show which installed apps moved the most bytes recently. Counter values only; we do not inspect traffic content.</li>
+    <li><strong>CHANGE_WIFI_MULTICAST_STATE</strong> &mdash; Listen on the local network for mDNS/Bonjour and SSDP/UPnP advertisements, so the Nearby Devices view can identify routers, printers, and other LAN devices.</li>
+    <li><strong>POST_NOTIFICATIONS</strong> &mdash; Display local push alerts on your device when the background cell-tower monitor flags a possible stingray event. Notifications are scheduled via Android&rsquo;s built-in NotificationManager &mdash; no Firebase Cloud Messaging, no remote push token, no external delivery service.</li>
+  </ul>
+  <p>Sus Detector does <strong>not</strong> request access to your camera, microphone, contacts, SMS, call logs, photos, storage, or biometrics for app features. (Two transitive permissions, USE_BIOMETRIC and USE_FINGERPRINT, may appear in the manifest because of the encrypted-storage library; the app does not gate any features behind biometric auth.)</p>
+
+  <h2>Data Storage on Your Device</h2>
+  <p>The following information is stored on your device for the app to function across sessions:</p>
+  <ul>
+    <li>Your trust-tier overrides for individual apps (so they survive re-scans)</li>
+    <li>BLE tracker sightings &mdash; needed to detect trackers that follow you over time</li>
+    <li>Cell tower names and favorites you create</li>
+    <li>Up to the last 500 cell signal anomaly events (timestamps, signal strength, cell ID)</li>
+    <li>Your background-stingray-monitor on/off setting</li>
+  </ul>
+  <p>Other data &mdash; the active scan results, the live signal graph, the security audit &mdash; is held in memory only and discarded when you close the app.</p>
+  <p><strong>Encryption at rest:</strong> All persisted data is encrypted with AES-256 using a randomly generated key sealed in your device&rsquo;s Android Keystore (hardware-backed where supported). The key never leaves the secure enclave; it cannot be read by other apps, by us, or by anyone with file-system access who does not also have your device unlocked.</p>
+  <p>You can erase all stored data at any time via <em>Settings &rarr; Erase All Data</em> in the app, or by uninstalling Sus Detector.</p>
+
+  <h2>Backups</h2>
+  <p>Sus Detector explicitly opts out of Android Auto Backup. Your stored data will not be uploaded to Google Drive or any cloud backup service.</p>
+
+  <h2>Network Activity</h2>
+  <p>Sus Detector makes one category of outbound network request: an HTTP probe of your own LAN gateway (typically <code>192.168.x.x</code> or similar private-network address) to identify the brand of your router. This request never reaches the public internet. We do not communicate with any server controlled by us or any third party.</p>
+
+  <h2>Third-Party Services</h2>
+  <p>Sus Detector does not integrate with any third-party services. There are no analytics providers, advertising networks, social-media SDKs, or cloud services embedded in the app. There is no Firebase. There is no Expo push. You can verify this by decompiling the AAB.</p>
+
+  <h2>Children&rsquo;s Privacy</h2>
+  <p>Sus Detector does not collect data from anyone, including children. The app is suitable for all ages.</p>
+
+  <h2>Changes to This Policy</h2>
+  <p>If we update this policy, the revised version will be posted here with an updated effective date. Since we do not collect email addresses, we cannot notify you directly &mdash; please check back periodically.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about this privacy policy? Reach us at <a href="mailto:dingledropperlabs@protonmail.com">dingledropperlabs@protonmail.com</a>.</p>
+</body>
+</html>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dingledropper LABS — privacy tools that can't phone home</title>
+<meta name="description" content="dingledropper LABS builds privacy software where your sensitive data stays yours. Different products, different architectures, same principle.">
+
+<!-- Open Graph (Facebook, LinkedIn, Discord, Slack, iMessage, Signal, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="dingledropper LABS">
+<meta property="og:url" content="https://dingledropper.com/">
+<meta property="og:title" content="dingledropper LABS">
+<meta property="og:description" content="privacy tools that physically can't phone home. no servers, no analytics, no accounts — everything on-device.">
+<meta property="og:image" content="https://dingledropper.com/og-image.png">
+<meta property="og:image:secure_url" content="https://dingledropper.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="dingledropper LABS — privacy tools that physically can't phone home">
+<meta property="og:image:type" content="image/png">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="dingledropper LABS">
+<meta name="twitter:description" content="privacy tools that physically can't phone home. no servers, no analytics, no accounts — everything on-device.">
+<meta name="twitter:image" content="https://dingledropper.com/og-image.png">
+<meta name="twitter:image:alt" content="dingledropper LABS — privacy tools that physically can't phone home">
+
+<!-- Theme color for browser chrome / bookmarks -->
+<meta name="theme-color" content="#A0C8E0">
+<style>
+  :root {
+    --bg: #A0C8E0;
+    --surface: #EADAE8;
+    --surface-elevated: #DCC4DA;
+    --text-primary: #0A1020;
+    --text-secondary: #1A2440;
+    --text-tertiary: #3A4A6A;
+    --outline: #0A1020;
+    --outline-soft: #1A2440;
+    --accent: #1A5A9A;
+    --glow: #4488CC;
+    --critical-bg: #F0C8C8;
+    --critical-text: #8A1111;
+    --low-bg: #C8F0D8;
+    --low-text: #117733;
+    --medium-bg: #F0E8B8;
+    --medium-text: #665500;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 32px 20px 64px;
+  }
+
+  /* ── Header ── */
+  header {
+    padding-top: 24px;
+    padding-bottom: 48px;
+    border-bottom: 2.5px solid var(--outline);
+    margin-bottom: 48px;
+  }
+
+  .brand {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--surface-elevated);
+    padding: 8px 14px;
+    border: 2.5px solid var(--outline);
+    box-shadow: 4px 4px 0 0 var(--outline);
+    color: var(--text-primary);
+  }
+
+  .logo {
+    font-size: clamp(40px, 8vw, 64px);
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-top: 24px;
+    color: var(--text-primary);
+  }
+
+  .logo .lab {
+    color: var(--accent);
+  }
+
+  .tagline {
+    font-size: clamp(18px, 3vw, 22px);
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-top: 16px;
+    max-width: 560px;
+    line-height: 1.4;
+  }
+
+  /* ── Manifesto — philosophy-level, not product-specific ── */
+  .manifesto {
+    background: var(--surface);
+    border: 2.5px solid var(--outline);
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+    box-shadow: 4px 4px 0 0 var(--outline);
+  }
+
+  .manifesto h2 {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-tertiary);
+    margin-bottom: 16px;
+  }
+
+  .manifesto p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+
+  .manifesto p:last-child { margin-bottom: 0; }
+
+  .manifesto strong {
+    color: var(--text-primary);
+    font-weight: 800;
+  }
+
+  /* ── Apps section ── */
+  .apps-heading {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-tertiary);
+    margin-bottom: 16px;
+  }
+
+  .app-card {
+    background: var(--surface-elevated);
+    border: 3px solid var(--outline);
+    border-radius: 22px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 4px 4px 0 0 var(--outline), 0 0 32px rgba(68, 136, 204, 0.35);
+    position: relative;
+    transition: transform 80ms, box-shadow 80ms;
+  }
+
+  .app-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .app-icon {
+    width: 72px;
+    height: 72px;
+    background: var(--bg);
+    border: 2.5px solid var(--outline);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    box-shadow: 3px 3px 0 0 var(--outline);
+    flex-shrink: 0;
+  }
+
+  .app-name-block { flex: 1; min-width: 180px; }
+
+  .app-name {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .app-category {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+  }
+
+  .app-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 2px solid;
+    border-radius: 100px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+  }
+
+  .status-live {
+    background: var(--low-bg);
+    color: var(--low-text);
+    border-color: var(--low-text);
+  }
+
+  .status-coming {
+    background: var(--medium-bg);
+    color: var(--medium-text);
+    border-color: var(--medium-text);
+  }
+
+  .app-status::before {
+    content: "●";
+    font-size: 10px;
+  }
+
+  .app-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+
+  /* ── Per-product privacy claims ── */
+  .app-claims {
+    background: var(--bg);
+    border: 2px solid var(--outline-soft);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 20px;
+  }
+
+  .app-claims-title {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+  }
+
+  .claim-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+  }
+
+  .claim-check {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    background: var(--accent);
+    color: #FFFFFF;
+    border: 2px solid var(--outline);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 11px;
+    box-shadow: 2px 2px 0 0 var(--outline);
+    margin-top: 1px;
+  }
+
+  .claim-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .claim-text strong {
+    color: var(--text-primary);
+    font-weight: 800;
+  }
+
+  .app-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .feature-chip {
+    display: inline-block;
+    background: var(--surface);
+    border: 2px solid var(--outline-soft);
+    border-radius: 100px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+  }
+
+  .app-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: var(--accent);
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    border: 2.5px solid var(--outline);
+    border-radius: 14px;
+    box-shadow: 4px 4px 0 0 var(--outline);
+    transition: transform 80ms, box-shadow 80ms;
+    cursor: pointer;
+  }
+
+  .btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 var(--outline);
+  }
+
+  .btn.secondary {
+    background: var(--surface);
+    color: var(--text-primary);
+  }
+
+  .btn.muted {
+    background: var(--surface);
+    color: var(--text-tertiary);
+    border-color: var(--outline-soft);
+    box-shadow: 3px 3px 0 0 var(--outline-soft);
+  }
+
+  /* ── Coming soon card — dimmed vs live ── */
+  .app-card.coming-soon {
+    box-shadow: 4px 4px 0 0 var(--outline);
+    opacity: 0.88;
+  }
+
+  /* ── Values section — philosophy, not architecture ── */
+  .values {
+    background: var(--surface);
+    border: 2.5px solid var(--outline);
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin-bottom: 40px;
+    box-shadow: 4px 4px 0 0 var(--outline);
+  }
+
+  .values h2 {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-tertiary);
+    margin-bottom: 20px;
+  }
+
+  .values ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .values li {
+    padding: 14px 0;
+    border-bottom: 1.5px solid rgba(10, 16, 32, 0.3);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .values li:last-child { border-bottom: none; }
+
+  .values .check {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    background: var(--accent);
+    color: #FFFFFF;
+    border: 2px solid var(--outline);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    box-shadow: 2px 2px 0 0 var(--outline);
+    margin-top: 2px;
+  }
+
+  .values .value-text {
+    flex: 1;
+  }
+
+  .values .value-title {
+    font-weight: 800;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .values .value-desc {
+    font-size: 14px;
+    color: var(--text-tertiary);
+  }
+
+  /* ── Footer ── */
+  footer {
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 2.5px solid var(--outline);
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+
+  footer p { margin-bottom: 8px; }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 1.5px solid var(--accent);
+  }
+
+  footer a:hover {
+    color: var(--text-primary);
+    border-bottom-color: var(--text-primary);
+  }
+
+  footer .legal {
+    font-size: 11px;
+    margin-top: 16px;
+    color: var(--text-tertiary);
+  }
+
+  @media (max-width: 480px) {
+    .container { padding: 24px 16px 48px; }
+    .app-card { padding: 24px 20px; }
+    .manifesto, .values { padding: 22px 20px; }
+    .app-claims { padding: 16px 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <span class="brand">dingledropper LABS</span>
+    <h1 class="logo">dingledropper<span class="lab"> LABS</span></h1>
+    <p class="tagline">privacy tools where your sensitive data stays yours.</p>
+  </header>
+
+  <!-- ── Manifesto — values / philosophy, NOT product-specific architecture claims ── -->
+  <section class="manifesto">
+    <h2>What we believe</h2>
+    <p>Your identity, your habits, and your personal information should never be the price of using software. We build tools where <strong>you should never have to trust us</strong> with any of it — different products, different architectures, same principle.</p>
+    <p>Some of our software runs entirely on your device with no server at all. Some uses cryptography so we can verify things about you without ever learning what those things are. The common thread: <strong>your sensitive data stays on your side of the wire</strong>, and we build so you can verify that claim rather than taking our word for it.</p>
+  </section>
+
+  <h2 class="apps-heading">Our products</h2>
+
+  <!-- ── SusDetector — live, claims specific to this product ── -->
+  <div class="app-card">
+    <div class="app-card-header">
+      <div class="app-icon">🛡️</div>
+      <div class="app-name-block">
+        <div class="app-name">SusDetector</div>
+        <div class="app-category">Android · Privacy Audit</div>
+        <div class="app-status status-live">Live on Google Play</div>
+      </div>
+    </div>
+
+    <p class="app-desc">
+      A full privacy audit for your Android phone. Scans every installed app's permissions, audits your device security, hunts for AirTags and nearby trackers, monitors your cell tower for suspicious signals, and tells you in plain English what's going on. No root required.
+    </p>
+
+    <!-- SusDetector-specific privacy claims -->
+    <div class="app-claims">
+      <div class="app-claims-title">How SusDetector protects you</div>
+      <div class="claim-row">
+        <div class="claim-check">✓</div>
+        <div class="claim-text"><strong>Fully on-device.</strong> No server. No cloud. Everything the app computes stays on your phone and nowhere else.</div>
+      </div>
+      <div class="claim-row">
+        <div class="claim-check">✓</div>
+        <div class="claim-text"><strong>Zero data collection.</strong> Not "minimized", not "anonymized" — zero. The binary contains no code that transmits your data.</div>
+      </div>
+      <div class="claim-row">
+        <div class="claim-check">✓</div>
+        <div class="claim-text"><strong>No accounts, no analytics, no ads.</strong> No Firebase, no Mixpanel, no Sentry, no crash reporters, no third-party SDKs of any kind.</div>
+      </div>
+      <div class="claim-row">
+        <div class="claim-check">✓</div>
+        <div class="claim-text"><strong>One tap to erase everything.</strong> All data lives in local storage. Nuke button in Settings wipes it all. Uninstall removes the rest.</div>
+      </div>
+    </div>
+
+    <div class="app-features">
+      <span class="feature-chip">40+ permissions</span>
+      <span class="feature-chip">150+ known apps</span>
+      <span class="feature-chip">Tracker detection</span>
+      <span class="feature-chip">DNS monitoring</span>
+      <span class="feature-chip">Cell tower radar</span>
+      <span class="feature-chip">5 security profiles</span>
+    </div>
+
+    <div class="app-buttons">
+      <a class="btn" href="https://play.google.com/store/apps/details?id=com.dingledropperlabs.susdetector">
+        Get on Play Store →
+      </a>
+      <a class="btn secondary" href="/susdetector/privacy.html">
+        Privacy Policy
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Sigil — coming soon, claims specific to this product ── -->
+  <div class="app-card coming-soon">
+    <div class="app-card-header">
+      <div class="app-icon">🔮</div>
+      <div class="app-name-block">
+        <div class="app-name">Sigil</div>
+        <div class="app-category">Identity · Zero-Knowledge Proofs</div>
+        <div class="app-status status-coming">Coming Soon</div>
+      </div>
+    </div>
+
+    <p class="app-desc">
+      Prove things about yourself online — your age, your identity, your credentials — without handing over any of the underlying data. Zero-knowledge proofs mean the verifier learns "yes, this person is over 21" and nothing else. No name, no birthday, no document scan ever leaves your phone.
+    </p>
+
+    <!-- Sigil-specific privacy claims -->
+    <div class="app-claims">
+      <div class="app-claims-title">How Sigil protects you</div>
+      <div class="claim-row">
+        <div class="claim-check">✓</div>
+        <div class="claim-text"><strong>Your identity data never leaves your phone.</strong> Credentials are stored in your device's secure vault. Proofs are generated on-device — the server never sees the underlying data.</div>
+      </div>
+      <div class="claim-row">
+        <div class="claim-check">✓</div>
+        <div class="claim-text"><strong>Zero-knowledge verification.</strong> Verifiers learn exactly one thing (e.g. "over 21") and nothing else. Not your name, not your birthday, not your document number.</div>
+      </div>
+      <div class="claim-row">
+        <div class="claim-check">✓</div>
+        <div class="claim-text"><strong>Unlinkable across sites.</strong> Each verification produces a unique cryptographic nullifier scoped to that domain. No one can correlate your verifications across different services.</div>
+      </div>
+      <div class="claim-row">
+        <div class="claim-check">✓</div>
+        <div class="claim-text"><strong>Stateless relay.</strong> The Sigil server is a message router, not a database. It relays your proof to the blockchain and deletes the request immediately. No logs, no profiles, no history.</div>
+      </div>
+    </div>
+
+    <div class="app-buttons">
+      <a class="btn muted" href="#" onclick="return false;">
+        Notify Me When It Launches
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Values — org-level philosophy, not technical architecture guarantees ── -->
+  <section class="values">
+    <h2>What we stand for</h2>
+    <ul>
+      <li>
+        <div class="check">✓</div>
+        <div class="value-text">
+          <span class="value-title">We don't monetize user data</span>
+          <span class="value-desc">not because of a policy that could change — because our products are architected so we never have it in the first place.</span>
+        </div>
+      </li>
+      <li>
+        <div class="check">✓</div>
+        <div class="value-text">
+          <span class="value-title">We publish privacy policies that say something</span>
+          <span class="value-desc">ours are short enough to read in two minutes because the answer to most questions is "we don't collect that."</span>
+        </div>
+      </li>
+      <li>
+        <div class="check">✓</div>
+        <div class="value-text">
+          <span class="value-title">We build so you don't have to trust us</span>
+          <span class="value-desc">on-device processing, zero-knowledge proofs, open architectures — we choose designs where "trust us" is replaced by "check for yourself."</span>
+        </div>
+      </li>
+      <li>
+        <div class="check">✓</div>
+        <div class="value-text">
+          <span class="value-title">Plain English, always</span>
+          <span class="value-desc">every warning, every permission flag, every privacy claim — written for a human who doesn't have an infosec degree.</span>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    <p><strong>Contact:</strong> <a href="mailto:dingledropperlabs@protonmail.com">dingledropperlabs@protonmail.com</a></p>
+    <p><strong>Privacy policies:</strong> <a href="/susdetector/privacy.html">SusDetector</a></p>
+    <p class="legal">© 2026 dingledropper LABS LLC. All rights reserved. SusDetector and Sigil are trademarks of dingledropper LABS LLC.</p>
+  </footer>
+
+</div>
+</body>
+</html>
