@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sus Detector — Android Privacy Audit by dingledropper LABS</title>
+<meta name="description" content="Sus Detector is an Android privacy audit app from dingledropper LABS. Scans every installed app's permissions, runs a 9-check device security audit, hunts trackers and stingrays. Zero data leaves your phone.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="dingledropper LABS">
+<meta property="og:url" content="https://dingledropper.com/susdetector/">
+<meta property="og:title" content="Sus Detector — Android Privacy Audit">
+<meta property="og:description" content="Scans every app, every permission, every nearby signal. Zero data leaves your phone.">
+<meta property="og:image" content="https://dingledropper.com/og-susdetector.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sus Detector — Android Privacy Audit">
+<meta name="twitter:description" content="Scans every app, every permission, every nearby signal. Zero data leaves your phone.">
+<meta name="twitter:image" content="https://dingledropper.com/og-susdetector.png">
+
+<meta name="theme-color" content="#A0C8E0">
+
+<style>
+  :root {
+    --bg: #A0C8E0;
+    --surface: #EADAE8;
+    --surface-elevated: #DCC4DA;
+    --text-primary: #0A1020;
+    --text-secondary: #1A2440;
+    --text-tertiary: #3A4A6A;
+    --outline: #0A1020;
+    --outline-soft: #1A2440;
+    --accent: #1A5A9A;
+    --glow: #4488CC;
+    --low-bg: #C8F0D8;
+    --low-text: #117733;
+    --medium-bg: #F0E8B8;
+    --medium-text: #665500;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 24px 20px 64px;
+  }
+
+  /* ── Back link to publisher home ── */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    padding: 8px 14px;
+    border: 2px solid var(--outline-soft);
+    border-radius: 100px;
+    background: var(--surface);
+    margin-bottom: 32px;
+  }
+
+  .back-link:hover {
+    color: var(--text-primary);
+    border-color: var(--outline);
+  }
+
+  /* ── Header / Hero ── */
+  header {
+    padding-bottom: 40px;
+    border-bottom: 2.5px solid var(--outline);
+    margin-bottom: 40px;
+  }
+
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+
+  .hero-icon {
+    width: 120px;
+    height: 120px;
+    background: var(--surface-elevated);
+    border: 3px solid var(--outline);
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 68px;
+    box-shadow: 5px 5px 0 0 var(--outline), 0 0 40px rgba(68, 136, 204, 0.45);
+    flex-shrink: 0;
+  }
+
+  .hero-text { flex: 1; min-width: 260px; }
+
+  .app-name {
+    font-size: clamp(44px, 8vw, 64px);
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+
+  .app-sub {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: var(--text-tertiary);
+    margin-top: 8px;
+  }
+
+  .app-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--low-bg);
+    color: var(--low-text);
+    border: 2.5px solid var(--low-text);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 14px;
+    box-shadow: 3px 3px 0 0 var(--outline);
+  }
+
+  .app-status::before { content: "●"; font-size: 10px; }
+
+  .tagline {
+    font-size: clamp(20px, 3.2vw, 24px);
+    font-weight: 700;
+    color: var(--text-secondary);
+    line-height: 1.35;
+    margin-top: 32px;
+    max-width: 680px;
+  }
+
+  /* ── Pitch / overview block ── */
+  .pitch {
+    background: var(--surface);
+    border: 2.5px solid var(--outline);
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+    box-shadow: 4px 4px 0 0 var(--outline);
+  }
+
+  .pitch p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+
+  .pitch p:last-child { margin-bottom: 0; }
+
+  .pitch strong {
+    color: var(--text-primary);
+    font-weight: 800;
+  }
+
+  /* ── Section heading ── */
+  .section-heading {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-tertiary);
+    margin-bottom: 16px;
+  }
+
+  /* ── Feature cards (grid) ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .feature-card {
+    background: var(--surface-elevated);
+    border: 2.5px solid var(--outline);
+    border-radius: 16px;
+    padding: 22px 24px;
+    box-shadow: 4px 4px 0 0 var(--outline);
+  }
+
+  .feature-emoji {
+    font-size: 32px;
+    margin-bottom: 10px;
+    line-height: 1;
+  }
+
+  .feature-title {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ── Privacy claims block ── */
+  .privacy-block {
+    background: var(--surface);
+    border: 2.5px solid var(--outline);
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+    box-shadow: 4px 4px 0 0 var(--outline);
+  }
+
+  .privacy-block h2 {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-tertiary);
+    margin-bottom: 20px;
+  }
+
+  .claim-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1.5px solid rgba(10, 16, 32, 0.18);
+  }
+
+  .claim-row:last-child { border-bottom: none; }
+
+  .claim-check {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    background: var(--accent);
+    color: #FFFFFF;
+    border: 2px solid var(--outline);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    box-shadow: 2px 2px 0 0 var(--outline);
+    margin-top: 2px;
+  }
+
+  .claim-text {
+    flex: 1;
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .claim-text strong {
+    color: var(--text-primary);
+    font-weight: 800;
+  }
+
+  /* ── Tech facts row ── */
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 48px;
+  }
+
+  .fact {
+    background: var(--surface);
+    border: 2px solid var(--outline-soft);
+    border-radius: 100px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+  }
+
+  .fact strong {
+    color: var(--text-primary);
+    font-weight: 900;
+  }
+
+  /* ── Get-the-app CTA block ── */
+  .cta-block {
+    background: var(--surface-elevated);
+    border: 3px solid var(--outline);
+    border-radius: 22px;
+    padding: 32px;
+    margin-bottom: 48px;
+    box-shadow: 4px 4px 0 0 var(--outline), 0 0 32px rgba(68, 136, 204, 0.35);
+    text-align: center;
+  }
+
+  .cta-block h2 {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .cta-block p {
+    font-size: 15px;
+    color: var(--text-tertiary);
+    margin-bottom: 24px;
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 22px;
+    background: var(--accent);
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    border: 2.5px solid var(--outline);
+    border-radius: 14px;
+    box-shadow: 4px 4px 0 0 var(--outline);
+    transition: transform 80ms, box-shadow 80ms;
+    cursor: pointer;
+  }
+
+  .btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 var(--outline);
+  }
+
+  .btn.secondary {
+    background: var(--surface);
+    color: var(--text-primary);
+  }
+
+  /* ── Policy / legal nav ── */
+  .policy-nav {
+    background: var(--surface);
+    border: 2.5px solid var(--outline);
+    border-radius: 18px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    box-shadow: 4px 4px 0 0 var(--outline);
+  }
+
+  .policy-nav h2 {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+  }
+
+  .policy-nav ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .policy-nav li {
+    padding: 6px 0;
+    font-size: 15px;
+  }
+
+  .policy-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 1.5px solid var(--accent);
+  }
+
+  .policy-nav a:hover {
+    color: var(--text-primary);
+    border-bottom-color: var(--text-primary);
+  }
+
+  /* ── Footer ── */
+  footer {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 2.5px solid var(--outline);
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+
+  footer p { margin-bottom: 8px; }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 1.5px solid var(--accent);
+  }
+
+  footer a:hover {
+    color: var(--text-primary);
+    border-bottom-color: var(--text-primary);
+  }
+
+  footer .legal {
+    font-size: 11px;
+    margin-top: 16px;
+    color: var(--text-tertiary);
+  }
+
+  @media (max-width: 480px) {
+    .container { padding: 20px 16px 48px; }
+    .pitch, .privacy-block, .policy-nav, .cta-block { padding: 22px 20px; }
+    .feature-card { padding: 18px 20px; }
+    .hero { gap: 20px; }
+    .hero-icon { width: 96px; height: 96px; font-size: 56px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <a class="back-link" href="https://dingledropper.com/">← dingledropper LABS</a>
+
+  <header>
+    <div class="hero">
+      <div class="hero-icon">🛡️</div>
+      <div class="hero-text">
+        <h1 class="app-name">Sus Detector</h1>
+        <div class="app-sub">Android · Privacy Audit · by dingledropper LABS</div>
+        <div class="app-status">Available now</div>
+      </div>
+    </div>
+    <p class="tagline">find out what your apps are really up to — on your phone, nowhere else.</p>
+  </header>
+
+  <!-- ── Overview ── -->
+  <section class="pitch">
+    <p>Sus Detector is an <strong>Android privacy audit</strong>. It scans every installed app on your phone, reads each one's declared permissions, and tells you in plain English what each permission could be misused for. It runs a <strong>nine-check device-security audit</strong> over your network and hardware posture, sweeps for nearby trackers (AirTags, Tiles, unknown BLE), monitors your serving cell tower for IMSI-catcher patterns, and surfaces it all as one easy-to-read score.</p>
+    <p>Every computation happens on your phone. <strong>Sus Detector has no server, no analytics, no accounts, and no ads.</strong> Anything saved on your device is encrypted at rest with a key sealed in your phone's hardware-backed keystore.</p>
+  </section>
+
+  <!-- ── Features grid ── -->
+  <h2 class="section-heading">What it does</h2>
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <div class="feature-emoji">🔍</div>
+      <div class="feature-title">App permission scanner</div>
+      <div class="feature-desc">Inventories every installed app and reads its declared permissions. Each app gets a per-permission breakdown with a "sus" risk score and plain-English explanation of what each permission could be misused for.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-emoji">🛡️</div>
+      <div class="feature-title">9-check device security audit</div>
+      <div class="feature-desc">Audits Wi-Fi encryption, VPN status, DNS posture, Bluetooth visibility, USB-debug exposure, NFC, disk encryption, screen lock, and hotspot. Tells you what's off and how to fix each one.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-emoji">📡</div>
+      <div class="feature-title">Nearby radar</div>
+      <div class="feature-desc">Detects unknown Bluetooth Low Energy devices in your vicinity. Flags AirTags and Tile trackers that follow you across sessions. Scans Wi-Fi networks, NFC tags, and open LAN ports.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-emoji">📶</div>
+      <div class="feature-title">Stingray watch</div>
+      <div class="feature-desc">Monitors your serving cell tower in the background. Flags sudden tower swaps, unusually weak crypto, and other IMSI-catcher signatures — the patterns used to intercept calls and SMS.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-emoji">👤</div>
+      <div class="feature-title">Security profiles</div>
+      <div class="feature-desc">Five built-in profiles (Home, Shopping, Work, Travel, Lockdown) score your current device state against the profile's requirements so you can see at a glance what to fix for where you are.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-emoji">🧹</div>
+      <div class="feature-title">One-tap nuke</div>
+      <div class="feature-desc">A single button in Settings wipes every byte Sus Detector has stored on your device — trust overrides, tracker sightings, cell history, everything. Uninstall removes the rest.</div>
+    </div>
+
+  </div>
+
+  <!-- ── Privacy claims ── -->
+  <section class="privacy-block">
+    <h2>How Sus Detector protects you</h2>
+
+    <div class="claim-row">
+      <div class="claim-check">✓</div>
+      <div class="claim-text"><strong>Zero data leaves your phone.</strong> Sus Detector has no servers, no backend, no analytics, no crash reporters, no ad SDKs, no Firebase, no remote push tokens. The binary is auditable for the absence of network code touching user data.</div>
+    </div>
+
+    <div class="claim-row">
+      <div class="claim-check">✓</div>
+      <div class="claim-text"><strong>Encrypted at rest.</strong> Anything Sus Detector remembers between sessions — trust overrides, tracker sightings, cell-tower history — is stored using AES-256, with the key sealed in the Android hardware-backed keystore.</div>
+    </div>
+
+    <div class="claim-row">
+      <div class="claim-check">✓</div>
+      <div class="claim-text"><strong>No accounts, ever.</strong> Sus Detector has no sign-up, no login, no email collection, no anonymous-but-still-tracked device identifier. You install it, you use it, you uninstall it — that's the whole loop.</div>
+    </div>
+
+    <div class="claim-row">
+      <div class="claim-check">✓</div>
+      <div class="claim-text"><strong>No root required.</strong> Every feature works on a stock, unrooted Android phone. Sus Detector uses standard public Android APIs (PackageManager, NetworkStatsManager, TelephonyManager) — no exploits, no shell commands.</div>
+    </div>
+
+    <div class="claim-row">
+      <div class="claim-check">✓</div>
+      <div class="claim-text"><strong>Location stays on your phone.</strong> The app requests fine location because Android requires it to enable Bluetooth scanning and cell-tower reads on Android 10+. Sus Detector does not store, log, or transmit coordinates.</div>
+    </div>
+
+  </section>
+
+  <!-- ── Tech facts ── -->
+  <h2 class="section-heading">Specs</h2>
+  <div class="facts">
+    <span class="fact"><strong>Platform:</strong> Android 8.0+</span>
+    <span class="fact"><strong>Package:</strong> com.dingledropperlabs.susdetector</span>
+    <span class="fact"><strong>Version:</strong> 1.3.1</span>
+    <span class="fact"><strong>Size:</strong> ~85 MB</span>
+    <span class="fact"><strong>Network calls:</strong> none</span>
+    <span class="fact"><strong>Third-party SDKs:</strong> none</span>
+    <span class="fact"><strong>License:</strong> proprietary</span>
+  </div>
+
+  <!-- ── CTA / get the app ── -->
+  <section class="cta-block">
+    <h2>Get Sus Detector</h2>
+    <p>Available on Google Play and the Solana dApp Store.</p>
+    <div class="cta-buttons">
+      <a class="btn" href="https://play.google.com/store/apps/details?id=com.dingledropperlabs.susdetector">
+        Google Play →
+      </a>
+      <a class="btn secondary" href="https://dappstore.solana.com/">
+        Solana dApp Store →
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Policy nav ── -->
+  <section class="policy-nav">
+    <h2>Policies & support</h2>
+    <ul>
+      <li><a href="/susdetector/privacy.html">Privacy Policy</a> — what we collect (nothing) and what each permission is for</li>
+      <li><a href="/susdetector/terms.html">Terms of Use</a> — license, copyright, warranty disclaimer</li>
+      <li><a href="mailto:dingledropperlabs@protonmail.com">dingledropperlabs@protonmail.com</a> — support, bug reports, press, anything</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p><strong>Publisher:</strong> <a href="https://dingledropper.com/">dingledropper LABS</a> — privacy tools where your sensitive data stays yours.</p>
+    <p><strong>Contact:</strong> <a href="mailto:dingledropperlabs@protonmail.com">dingledropperlabs@protonmail.com</a></p>
+    <p class="legal">© 2026 dingledropper LABS LLC. All rights reserved. Sus Detector is a trademark of dingledropper LABS LLC. Google Play and the Google Play logo are trademarks of Google LLC. Solana and the Solana dApp Store are trademarks of Solana Foundation.</p>
+  </footer>
+
+</div>
+</body>
+</html>
